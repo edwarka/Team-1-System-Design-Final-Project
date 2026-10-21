@@ -1,4 +1,4 @@
-# [Product/Service Name] — Specification
+# Vehicle Maintenance Tracker — Specification
 
 > **When:** Week 1 (Section 0), Week 2 (the rest), refined in Week 3 · **Owner:** Product Owner · **Done when:** every item in the SVC Self-Check at the end is true.
 >
@@ -18,8 +18,9 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 
 | # | Principle | Why it exists |
 |---|-----------|---------------|
-| 1 | | |
-| 2 | | |
+| 1 | Every maintenance task is explained in plain language (what it is and why it matters) and labeled as general guidance, pointing drivers to their owner's manual or a mechanic when in doubt. | Not knowing what the car needs is the problem we're solving, and these drivers can't tell when general advice is wrong for their car. |
+| 2 | A driver's car details and maintenance history are visible only to that driver. | Maintenance records are personal. Anyone who sees a car could find its plate and its owner's name, so data must never be looked up by what's visible on the car alone. |
+| 3 | The app never promotes or sells specific shops, parts, or products. | Drivers who can't judge advice for themselves need to trust that recommendations are about their car, not about selling them something. |
 
 ---
 
