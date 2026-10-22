@@ -91,7 +91,7 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 | ID | Question | Raised by | Owner | Status |
 |----|----------|-----------|-------|--------|
 | Q1 | How will the app decide which maintenance each car needs and when (hand-built rules, standard intervals by mileage/age, or an outside data source)? | Michal Broniek (Business Case §2) | Nasif Rahman | Open |
-| Q2 | Does CARFAX Car Care already explain maintenance tasks in plain language? Someone on the team should try it before Business Case Section 3 is final. | Michal Broniek (Business Case §3) | Michal Broniek | Open |
+| Q2 | Does CARFAX Car Care already explain maintenance tasks in plain language? Someone on the team should try it before Business Case Section 3 is final. | Michal Broniek (Business Case §3) | Michal Broniek | Resolved: No — CARFAX Car Care does not explain maintenance in a way that people who know nothing about vehicles can easily understand. Business Case §3 updated. |
 
 ---
 
