@@ -11,3 +11,13 @@ This repository is a team's System Design project. The design documents in `docs
 - **Build in the folder you're given** (the repository root, or `validation/` for the Week 6 validation build). Never put app code in `docs/`.
 - **`prototype/` is throwaway.** Never build from it or copy it into the app.
 - **Don't change the documents in `docs/` unless asked.** The team owns them.
+- **Name people, not just roles.** When writing an owner, "Raised by," or anyone who has to answer something (Open Questions, approvals, tasks), use the person's name from the team table below.
+
+## Team
+
+| Name | Role | Owns |
+|------|------|------|
+| Michal Broniek | Product Owner | Business Case, Specification |
+| Delorean Wiggins | Architecture Lead | Plan |
+| Nasif Rahman | Architecture Lead | Data & API Design |
+| Kaleb Edwards | Delivery Lead | Style Guide, Tasks, Weekly Status |

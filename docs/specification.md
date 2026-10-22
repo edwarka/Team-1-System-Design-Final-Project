@@ -1,4 +1,4 @@
-# [Product/Service Name] — Specification
+# Vehicle Maintenance Tracker — Specification
 
 > **When:** Week 1 (Section 0), Week 2 (the rest), refined in Week 3 · **Owner:** Product Owner · **Done when:** every item in the SVC Self-Check at the end is true.
 >
@@ -18,8 +18,9 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 
 | # | Principle | Why it exists |
 |---|-----------|---------------|
-| 1 | | |
-| 2 | | |
+| 1 | Every maintenance task is explained in plain language (what it is and why it matters) and labeled as general guidance, pointing drivers to their owner's manual or a mechanic when in doubt. | Not knowing what the car needs is the problem we're solving, and these drivers can't tell when general advice is wrong for their car. |
+| 2 | A driver's car details and maintenance history are visible only to that driver. | Maintenance records are personal. Anyone who sees a car could find its plate and its owner's name, so data must never be looked up by what's visible on the car alone. |
+| 3 | The app never promotes or sells specific shops, parts, or products. | Drivers who can't judge advice for themselves need to trust that recommendations are about their car, not about selling them something. |
 
 ---
 
@@ -89,7 +90,8 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 
 | ID | Question | Raised by | Owner | Status |
 |----|----------|-----------|-------|--------|
-| Q1 | | | | Open / Resolved: [answer] |
+| Q1 | How will the app decide which maintenance each car needs and when (hand-built rules, standard intervals by mileage/age, or an outside data source)? | Michal Broniek (Business Case §2) | Nasif Rahman | Open |
+| Q2 | Does CARFAX Car Care already explain maintenance tasks in plain language? Someone on the team should try it before Business Case Section 3 is final. | Michal Broniek (Business Case §3) | Michal Broniek | Resolved: No — CARFAX Car Care does not explain maintenance in a way that people who know nothing about vehicles can easily understand. Business Case §3 updated. |
 
 ---
 
