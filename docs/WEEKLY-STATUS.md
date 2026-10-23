@@ -24,7 +24,7 @@ This is the one file your instructor checks each week. Keep each entry short: so
 - **Open questions:** *Q1 in specificaiton.*
 - **AI use:** *Claude was used to better refine the business case/specification*
 - **Change request:** *None*
-- **Instructor response:** *(Filled in by the instructor: Approved / Declined, date, and any note.)*
+- **Instructor response:** *jLyst: Approved, 10/23/2026*
 
 ---
 
