@@ -28,4 +28,22 @@ This is the one file your instructor checks each week. Keep each entry short: so
 
 ---
 
-*(Add each new week above the previous one.)*
+## Week [2] — [10/29/2026]
+
+- **Done:** 
+  - *Michal: Refined specification and added prioritized scenarios + EARS requirements + acceptance tests. Reviewed style guide.*
+  - *Delorean: Updated Architecture Plan for the upcoming weeks. Reviewed updated specfication and style guide.*
+  - *Kaleb: Created style guide and gave a framework of what the website will appear like. Reviewed updated specification/plan. Updated weekly status.*
+  - *Nasif: Reviewed updated specfication and style guide.*
+- **Next:**
+  - *Michal: Update secification.md. Open questions resolved, requirements tightened against feasibility, prototype test run and Evidence table updated. Help create prototype. Review all other changes to repository.*
+  - *Delorean: Update/refine plan.md. Sections 1–2 (approach, key decisions including the tech stack as ADR-00). Flag at least one Spec ambiguity back to PO. Help test prototype. Review other changes to docs.*
+  - *Kaleb: Assist in creating prototype. Help test prototype. Review other doc changes to repository. Update weekly status.*
+  - *Nasif: Update data-api-design.md. Sections 0–2 (database & storage, entities, ERD). Help test prototype. Review other changes to docs.*
+- **Blockers:** *N/A*
+- **Open questions:** *Q1 and Q2 in specificaiton.*
+- **AI use:** *Claude was used to better refine the specification*
+- **Change request:** *None*
+- **Instructor response:** **
+
+---
