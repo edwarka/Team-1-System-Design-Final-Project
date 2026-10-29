@@ -33,9 +33,11 @@ The app should use simple wording that makes sense to someone who knows very lit
 | Changing mileage | Update mileage | Modify odometer data |
 | Upcoming maintenance | Oil change due soon | Critical maintenance event |
 | Missing mileage | Please enter your car's mileage. | Invalid input |
+| Incorrect mileage | Mileage can't be lower than your last entry. | Invalid input |
 | Incorrect date | The date can't be in the future. | Date validation failed |
 | No schedule available | We don't have a schedule for this car yet. Check your owner's manual or ask a mechanic. | No data found |
 | Empty history | No maintenance recorded yet. | No records available |
+| Invalid Email | Please enter a valid email address.| Response invalid |
 
 Every maintenance task must include this message:
 
