@@ -44,6 +44,6 @@ This is the one file your instructor checks each week. Keep each entry short: so
 - **Open questions:** *Q1 and Q2 in specificaiton.*
 - **AI use:** *Claude was used to better refine the specification*
 - **Change request:** *None*
-- **Instructor response:** **
+- **Instructor response:** *jLyst: Approved*
 
 ---
