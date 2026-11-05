@@ -59,6 +59,12 @@ Preliminary Week 4 inventory, to be refined from actual Week 3 prototype observa
 
 **Prototype handoff:** Mike shared a throwaway HTML prototype in Slack. DeLorean still needs actual observations from a target-like user; no completed session or outcome is claimed here. Give findings to Michal for the Spec's Evidence table, then carry useful screen findings into this inventory. Do not commit the throwaway prototype, copy its code into the app or treat its behavior as an approved requirement.
 
+**Prototype source review — November 4:** Inspection of the supplied `vehicle-maintenance-tracker.html` found the following. These findings describe the demo code; browser behavior and participant observations still need checking.
+
+- **R9/R12 clarification for Michal:** the completion handler already updates the car's mileage to the submitted completion mileage. For the sample oil interval, recording 60,500 changes the car to 60,500 and calculates the next oil change at 65,500. Confirm this intended transition in the Specification; the prototype alone does not approve it.
+- **Q1 baseline issue for Nasif and Michal:** when a task has no completion history, the demo calculates its next due value as the next interval after the car's current mileage. Increasing mileage from 60,000 to 66,000 therefore moves the sample oil due value from 65,000 to 70,000, rather than keeping the earlier threshold visible. Agree a stable baseline and missing-history rule so increasing mileage cannot silently defer needed work.
+- **Prototype scope:** it includes signup, car setup, task explanations, completion, mileage updates and history. Data lasts only until reload or Start over. Returning-driver sign-in, password reset and reminders are absent. Record these limits separately from user confusion; this prototype cannot verify those acceptance tests. Use fabricated data during the observed session.
+
 ## 4. Risks & Assumptions
 
 Ratings are preliminary. The decisions above are present blockers; these risks concern what could go wrong after choices are made.
