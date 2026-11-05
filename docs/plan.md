@@ -2,7 +2,7 @@
 
 > **When:** Week 3 (Sections 1–2), Week 4 (Sections 3–4)  
 > **Owner:** DeLorean Wiggins — Architecture Lead, Plan  
-> **Version:** 0.7 working proposal — November 4, 2026  
+> **Version:** 0.8 working proposal — November 5, 2026  
 > **Status:** Updated for the merged Specification; architecture approval pending.  
 > **Approved on:** Pending  
 > **Approved by:** DeLorean Wiggins — pending; Nasif Rahman — pending; Michal Broniek — pending; Kaleb Edwards — pending.  
@@ -25,15 +25,15 @@ The phone-friendly app lets a driver create an account, save one car, see upcomi
 | ADR-03 | **Proposed:** put maintenance calculation behind a shared data-service operation, using Nasif's agreed inputs and outputs. Sources, supported vehicles, baselines and date/mileage ordering remain open under Q1. | R4, R5, R8, R10; later R17 | Rules in each screen; screens calling an external schedule provider directly | One contract keeps schedule and completion behavior consistent and allows backend changes without rewriting screens. Both architecture owners must maintain that contract. |
 | ADR-04 | **Superseded proposal — replaced by ADR-05:** a simulated user picker alone was proposed before Q3 was resolved; it is no longer the planned product sign-in flow. | R13, R24–R28 | Real authentication during the course | Retained to explain the change. A picker alone omits the phone/password journey now required by S1 and R24–R28. |
 | ADR-05 | **Proposed, pending Michal and Nasif's review:** demonstrate the specified phone/password forms through a simulated account service using fabricated identities and designated demo credentials. Label account access/storage as simulated; a future real backend must authenticate drivers and enforce ownership. | R13, R24–R28; later R29–R31 | Picker-only interface; real authentication and SMS now | Exercises the specified account journey and validation without collecting private credentials. It adds simulation work and cannot prove security. No real passwords, phone numbers or SMS sending belong in this proposed demo; Michal must confirm the affected requirements' simulation boundaries. |
-| ADR-06 | **Proposed:** validate a completion, save its history entry and return the recalculated schedule through one data-service operation. Screens must not save history and change the schedule independently. | R9–R12 | Separate screen-driven writes | Keeps a rejected completion from partly changing the record or schedule. Nasif must define the failure response and later transaction design; Michal must clarify the mileage baseline first. |
+| ADR-06 | **Proposed:** validate and save a completion in one data-service operation. Save the history entry, advance the car's recorded mileage if the completion mileage is higher, and recalculate the task's next due value. A successful save needs no separate mileage prompt. A rejected entry changes none of these records. | R9–R12 | Separate screen-driven writes; prompt for each increase | The driver enters the odometer once, and history, car mileage and the schedule stay in sync. Nasif still needs to define the failure response and transaction behavior. |
 
 The Specification owns product choices, including one car per driver, phone/password access, privacy and no commercial promotion. These ADRs support those requirements; they do not reopen Q3.
 
-**Week 3 decisions needed before approval:**
+**Week 3 decisions and follow-up before approval:**
 
 - **DeLorean and Nasif:** agree the real database/provider and make ADR-00 match Data & API Section 0. That file on `main` remains a template at this revision; no entity or endpoint contract is assumed.
 - **Nasif, with Michal:** resolve Q1's recommendation source, supported vehicles, required baselines, missing history, units, date/mileage ordering and how completion sets the next interval (R4, R5, R8, R10).
-- **Michal — cross-review ambiguity:** R9 saves a completion and R12 compares entered mileage with the car's “last recorded mileage,” but neither states whether saving a completion updates that baseline. If a car shows 60,000 and a service is recorded at 60,500, is the car now at 60,500? Clarify this before Nasif defines the operation and ADR-06 is settled. Also confirm whether historical service below current mileage is intentionally rejected.
+- **Mileage cross-review — Michal to document:** in `#team-1`, DeLorean asked whether a service logged at 60,500 should advance a car showing 60,000. Mike favored updating it automatically; Kaleb agreed. The Plan follows that direction. Proposed addition to R9's acceptance test: save an otherwise valid oil change at 60,500, reload, and verify both the history entry and the car reading of 60,500. The current Specification checks the history entry but not the car reading. R11/R12 still reject future dates and lower mileage without saving; the discussion did not establish an exception for backfilled service.
 - **Michal and Nasif:** confirm the demonstration boundary for R13 and R24–R31. Q3 selects the product login method; it does not establish real authentication/SMS in a static demo. Record approved simulations against affected requirement IDs.
 
 When an approved decision changes, retain its ADR and add a replacement. No approval is inferred from a merge.
@@ -49,7 +49,7 @@ Preliminary Week 4 inventory, to be refined from actual Week 3 prototype observa
 | 3 | Account creation and sign-in | Proposed `#/sign-up`, `#/sign-in` | Phone/password forms, specified validation messages and driver-scoped demo records; clearly show the agreed simulation boundary. | R13–R15, R24–R28 | P1 |
 | 4 | Car setup | Proposed `#/car/setup` | Collects only make, model, year and mileage; names missing fields; saves one car and reaches its schedule or unsupported state. | R1–R5, R8, R13–R15 | P1 |
 | 5 | Maintenance detail | Proposed `#/maintenance/:taskId` | Explains the task, why it matters and its due basis; shows the exact general-guidance notice. Completes S1 with the earlier parts. | R5–R7, R13–R15 | P1 |
-| 6 | Mark maintenance done | Proposed `#/maintenance/:taskId/complete` | Validates date/mileage, saves completion and refreshes the next due value together. Shows the last completion after reload without requiring the later full history screen. Completes S2. | R9–R15 | P1 |
+| 6 | Mark maintenance done | Proposed `#/maintenance/:taskId/complete` | Validates the date and mileage. Saving a valid completion records the service, automatically advances the car's mileage if higher, and refreshes the task's next due value. After reload, shows the new car mileage and the last completion; the full history screen comes later. Completes S2. | R9–R15 | P1 |
 | 7 | Update mileage | Proposed `#/car/mileage` | Saves valid mileage and refreshes overdue status; reuses the shared rejection rule for lower readings. | R12–R17 | P2; shared P1 rules remain |
 | 8 | Full maintenance history | Proposed `#/history` | Lists all completions newest first or the specified empty state. P1 completion storage already exists. | R9, R13–R15, R18, R19 | P2 |
 | 9 | Password reset | Proposed `#/reset-password` | Demonstrates request, code, expiry and password-change states with fabricated data if simulation is agreed. Real SMS is not assumed. | R13–R15, R27–R31 | P2; shared P1 rules remain |
@@ -61,7 +61,7 @@ Preliminary Week 4 inventory, to be refined from actual Week 3 prototype observa
 
 **Prototype source review — November 4:** Inspection of the supplied `vehicle-maintenance-tracker.html` found the following. These findings describe the demo code; browser behavior and participant observations still need checking.
 
-- **R9/R12 clarification for Michal:** the completion handler already updates the car's mileage to the submitted completion mileage. For the sample oil interval, recording 60,500 changes the car to 60,500 and calculates the next oil change at 65,500. Confirm this intended transition in the Specification; the prototype alone does not approve it.
+- **R9/R12 behavior in the demo:** the completion handler sets the car's mileage to the saved service mileage. For the sample oil interval, logging 60,500 sets the car to 60,500 and calculates the next oil change at 65,500. This matches Mike and Kaleb's later Slack responses about the odometer. The 5,000-mile interval is sample data; the recommendation rules are still open under Q1.
 - **Q1 baseline issue for Nasif and Michal:** when a task has no completion history, the demo calculates its next due value as the next interval after the car's current mileage. Increasing mileage from 60,000 to 66,000 therefore moves the sample oil due value from 65,000 to 70,000, rather than keeping the earlier threshold visible. Agree a stable baseline and missing-history rule so increasing mileage cannot silently defer needed work.
 - **Prototype scope:** it includes signup, car setup, task explanations, completion, mileage updates and history. Data lasts only until reload or Start over. Returning-driver sign-in, password reset and reminders are absent. Record these limits separately from user confusion; this prototype cannot verify those acceptance tests. Use fabricated data during the observed session.
 
@@ -72,7 +72,7 @@ Ratings are preliminary. The decisions above are present blockers; these risks c
 | Risk or assumption | Likelihood | Impact | Mitigation |
 |---|---|---|---|
 | Recommendations may not fit a car or may be mistaken for manufacturer advice. | Medium | High | Nasif and Michal limit supported coverage, check sources and use R8's unsupported state. Resolve Q1 before claiming the calculation is complete. |
-| Missing history, unclear mileage baselines or mixed date/mileage rules may mislead. | Medium | High | Michal resolves R9/R12; Nasif specifies units, baselines and boundaries. Check concrete completion and missing-data examples. |
+| Missing history or mixed date/mileage rules may make due work disappear. | Medium | High | Michal records the automatic odometer update in R9. Nasif defines the maintenance baselines and units under Q1. Check that raising the odometer alone cannot move a missed service's due threshold forward. |
 | Simulated login may be mistaken for real privacy protection. | Medium | High | Use only fabricated identities/demo credentials; label affected requirements as simulated. DeLorean and Nasif design real backend ownership checks for later. |
 | Browser storage may disappear or be mistaken for cross-device synchronization. | Medium | Medium | Agree persistence limits and save/reset behavior. Make no synchronization promise. |
 | Real SMS, email or recovery may expand course scope. | Medium | High | Keep reset at P2 and reminders at P3. Agree delivery/simulation and external dependencies before building them. |
@@ -86,5 +86,5 @@ Ratings are preliminary. The decisions above are present blockers; these risks c
 - [ ] **Valuable** — every ADR and screen has a requirement ID; every “Why this one” names a real trade-off.
 - [ ] **Complete** — ADR-00 names the full stack, starter skill and database; every P1 requirement is covered by a screen or part; P1 comes first, one scenario end to end at a time; every risk has a mitigation; the team has approved it before Tasks are written.
 
-**Approval:** DeLorean Wiggins, Nasif Rahman, Michal Broniek and Kaleb Edwards must review the completed Plan before approval or Tasks. Database selection, Q1, the mileage clarification, simulation scope and prototype findings remain pending. This revision does not mark Week 3 or Week 4 complete.
+**Approval:** DeLorean Wiggins, Nasif Rahman, Michal Broniek and Kaleb Edwards must review the completed Plan before approval or Tasks. The mileage direction is recorded here; the matching Specification update, database selection, Q1, simulation scope and actual prototype observations remain pending. This revision does not mark Week 3 or Week 4 complete.
 
