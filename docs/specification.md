@@ -36,6 +36,11 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 | E4 | Records were kept 5 different ways: glovebox receipts, the dealership's system, a notebook, the windshield sticker, a phone calendar. | Drivers, interviews (all 5) |
 | E5 | Deleted a maintenance app because setup asked for too much information. Another driver installed CARFAX but kept forgetting to check it. | Drivers, interviews (Persons 4 and 1) |
 | E6 | 2 of 5 wanted to check it on their phone, one while standing at the repair shop. The other 3 preferred email, a text message, or the car's dashboard screen. | Drivers, interviews (all 5; Persons 1 and 5 wanted the phone) |
+| E7 | Set up the account and car without help, and named the oil change as the next service. Didn't say when it was due. | Prototype test, tester 1 (reported by Delorean Wiggins) |
+| E8 | Wasn't sure the oil change had saved after marking it done. | Prototype test, tester 1 (reported by Delorean Wiggins) |
+| E9 | Found it hard to remember what was on the screen and what to click. | Prototype test, tester 1 (reported by Delorean Wiggins) |
+| E10 | Expected to get an email when maintenance is due. | Prototype test, tester 1 (reported by Delorean Wiggins) |
+| E11 | Wanted to enter when maintenance was last done, and wasn't sure whether the app allowed past entries or how that would work. | Prototype test, tester 2 (reported by Michal Broniek) |
 
 **Riskiest assumption:** Drivers will come back to check the app on their own, without being reminded, when maintenance is due. One interviewee installed CARFAX but kept forgetting to check it (E5), and 3 of 5 wanted reminders to come to them. We'll find out in the Week 3 prototype test by asking testers how they'd expect to learn something is due, and by watching whether they look for a reminder option.
 
@@ -43,7 +48,7 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 
 ## 2. Scope
 
-**In scope:** Setting up one car with its make, model, year, and mileage. Seeing upcoming maintenance with a plain-language explanation of each task. Marking tasks done with a date and mileage. Updating the car's mileage. Viewing past maintenance. Creating an account with a phone number and a password, signing in, and resetting a forgotten password by text. Reminders when a task is due, if time allows (S5).
+**In scope:** Setting up one car with its make, model, year, and mileage. Seeing upcoming maintenance with a plain-language explanation of each task. Marking tasks done with a date and mileage. Updating the car's mileage. Viewing past maintenance. Creating an account with a phone number and a password, signing in, and resetting a forgotten password by text. Logging maintenance that was done before the driver started using the app. Reminders when a task is due, if time allows (S5).
 
 **Out of scope:** More than one car per driver. Looking up a car by VIN or license plate. Connecting to the car, a sensor, or a dealer account. Recommending or booking shops, and selling parts or products. Repair cost estimates. Diagnosing problems or warning lights. A downloadable phone app.
 
@@ -63,7 +68,7 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 - **Trigger:** Just had an oil change or another task done
 - **Steps:** Signs in → opens their car → picks the task → marks it done with the date and mileage
 - **Success outcome:** The task moves to their history, and the next time it's due shows up in the upcoming list.
-- **Failure outcome:** The date is in the future, or the mileage is lower than the last recorded mileage → the task isn't saved, and the app says what to fix.
+- **Failure outcome:** The date is in the future, or a mileage entered for today is lower than the last recorded mileage → the task isn't saved, and the app says what to fix.
 
 **S3: Update my car's mileage**, Priority: P2
 - **Actor:** Driver
@@ -101,9 +106,9 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 | R7 | The system shall label every task "General guidance. Check your owner's manual or ask a mechanic." | P1 | Open any task → see "General guidance. Check your owner's manual or ask a mechanic." | Constitution 1 |
 | R8 | If the system has no schedule for the entered car, then the system shall show "We don't have a schedule for this car yet. Check your owner's manual or ask a mechanic." | P1 | Enter a make and model not in the schedule data → that message appears and no task list is shown | Constitution 1 |
 | R9 | When a driver marks a task done with a date and mileage, the system shall add it to the car's history. | P1 | Mark "Oil change" done on 2026-10-01 at 60,500 → reload the page → the oil change shows it was last done on 2026-10-01 at 60,500 | E4 |
-| R10 | When a task is marked done, the system shall work out its next due date or mileage from that completion. | P1 | Mark "Oil change" done at 60,500 → its next due mileage is 60,500 plus the interval in the schedule data | E2 (depends on Q1) |
+| R10 | When a task is marked done, the system shall work out its next due date or mileage from its most recent completion. | P1 | Log an oil change at 55,000 on 2026-06-01, then one at 60,500 today → the next due mileage is 60,500 plus the interval, not 55,000 plus the interval | E2 (depends on Q1) |
 | R11 | If a completion date is in the future, then the system shall reject it with "The date can't be in the future." | P1 | Mark a task done with tomorrow's date → message appears and nothing is saved | WCAG 2.2 SC 3.3.1 and 3.3.3 (Error Suggestion) |
-| R12 | If any mileage entered is lower than the car's last recorded mileage, then the system shall reject it with "Mileage can't be lower than your last entry." | P1 | Car is at 60,500. Mark a task done at 59,000 → message appears and nothing is saved. Update the car's mileage to 60,000 → message appears and the mileage stays 60,500 | WCAG 2.2 SC 3.3.1 and 3.3.3, E2 |
+| R12 | If a mileage entered for today is lower than the car's last recorded mileage, then the system shall reject it with "Mileage can't be lower than your last entry." | P1 | Car is at 60,500. Mark a task done today at 59,000 → message appears and nothing is saved. Update the car's mileage to 60,000 → message appears and the mileage stays 60,500 | WCAG 2.2 SC 3.3.1 and 3.3.3, E2 |
 | R13 | The system shall show a driver only their own car and maintenance history. | P1 | Sign in as test driver A → none of test driver B's car or history appears anywhere | Constitution 2 |
 | R14 | The system shall show every screen at 320 pixels wide without sideways scrolling. | P1 | Open each screen at 320 px wide → no horizontal scroll bar | WCAG 2.2 SC 1.4.10 (Reflow), E6 |
 | R15 | The system shall give every form field a visible text label. | P1 | Inspect car setup and the mark-done form → each field has a label on screen | WCAG 2.2 SC 3.3.2 (Labels or Instructions) |
@@ -123,6 +128,9 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 | R29 | When a driver asks to reset their password, the system shall text a reset code to their account's phone number. | P2 | Tap "Forgot password," enter 555-201-4477 → a reset code is sent by text to that number | Constitution 2 |
 | R30 | When a driver enters a valid reset code and a new password, the system shall replace the old password. | P2 | Enter the texted code and "Brakes#2026" → sign in works with the new password and not the old one | Constitution 2 |
 | R31 | If a reset code is wrong or more than 10 minutes old, then the system shall reject it with "That code didn't work. Request a new one." | P2 | Enter a code 11 minutes after it was sent → message appears and the password doesn't change | WCAG 2.2 SC 3.3.1 and 3.3.3 |
+| R32 | When a task is marked done, the system shall show "Saved. Next [task] due at [next due mileage or date]." | P1 | Mark "Oil change" done at 60,500 → see "Saved. Next oil change due at" followed by 60,500 plus the interval in the schedule data | E8, E7, WCAG 2.2 SC 4.1.3 (Status Messages) |
+| R33 | When a driver marks a task done with a past date, the system shall accept a mileage lower than the car's current mileage. | P1 | Car is at 60,000. Mark "Oil change" done on 2026-06-01 at 55,000 → saved to history, and the next oil change is worked out from 55,000 | E11, ASSUMPTION (Q4) |
+| R34 | When a task is marked done with a mileage higher than the car's current mileage, the system shall update the car's mileage to match. | P1 | Car is at 60,000. Mark "Oil change" done today at 60,500 → reload → the car shows 60,500 | Team decision in #team-1 (Plan, mileage cross-review) |
 
 ---
 
@@ -130,9 +138,10 @@ The Spec is the source of truth for *what* you're building. Write it so a teamma
 
 | ID | Question | Raised by | Owner | Status |
 |----|----------|-----------|-------|--------|
-| Q1 | How will the app decide which maintenance each car needs and when (hand-built rules, standard intervals by mileage/age, or an outside data source)? | Michal Broniek (Business Case §2) | Nasif Rahman | Open |
+| Q1 | How will the app decide which maintenance each car needs and when (hand-built rules, standard intervals by mileage/age, or an outside data source)? | Michal Broniek (Business Case §2) | Nasif Rahman | Resolved: hand-built intervals from published manufacturer recommendations, for a limited list of supported make, model, and year combinations. Cars not on the list get R8's message. A task is due at its setup mileage plus the interval until a completion is logged, then at the most recent completion's mileage plus the interval. See Data & API Design, MaintenanceSchedule. R4, R5, R8, and R10 no longer blocked. |
 | Q2 | Does CARFAX Car Care already explain maintenance tasks in plain language? Someone on the team should try it before Business Case Section 3 is final. | Michal Broniek (Business Case §3) | Michal Broniek | Resolved: No. CARFAX Car Care does not explain maintenance in a way that people who know nothing about vehicles can easily understand. Business Case §3 updated. |
 | Q3 | How does a driver get back to their saved car? One idea is last name and license plate, but anyone who sees the car could guess both, which breaks Constitution rule 2. Options: last name and plate plus a PIN, plate plus a PIN, an email link, or a regular login system with an email and password. A login system is the most familiar to drivers, but it adds account setup, which E5 says can drive people away. Affects R13. | Michal Broniek (Spec §3, R13) | Whole Team | Resolved: drivers create an account with a phone number and a password of at least 8 characters. Forgotten passwords are reset with a code sent by text. Email is only collected for reminders. This goes against E5, but it's the safest option. Scope, S1, S2, and R24 to R31 updated. |
+| Q4 | Should drivers be able to log maintenance done before they started using the app, at a lower mileage than the car shows now? | Michal Broniek (E11, R12) | Whole Team | Open. ASSUMPTION: yes. R10, R12, R33, and Scope are written this way and will change if the team says no. |
 
 ---
 
