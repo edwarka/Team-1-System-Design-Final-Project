@@ -47,3 +47,23 @@ This is the one file your instructor checks each week. Keep each entry short: so
 - **Instructor response:** *jLyst: Approved*
 
 ---
+
+## Week [3] — [11/5/2026]
+
+- **Done:** 
+  - *Michal: Updated secification.md. Requirements tightened against feasibility, prototype test run and Evidence table updated. Created prototype. Had a user test prototype. Reviewed all other changes to repository.*
+  - *Delorean: Updated plan.md. Matched plan to spec, added requirement IDs, and updated architecture descisions. Had a  user test prototype. Reviewed other changes to docs.*
+  - *Kaleb: Tested prototype. Reviewed all changes made to repository. Updated weekly status.*
+  - *Nasif: Updated data-api-design.md. Helped test prototype. Reviewed other changes to docs.*
+- **Next:**
+  - *Michal: Help where needed. Review changes made to docs.*
+  - *Delorean: Update plan.md Sections 3–4 (screens & build order, risks & assumptions). Review other changes made to docs.*
+  - *Kaleb:  Help where needed. Review changes made to docs. Update weekly status.*
+  - *Nasif: Update data-api-design.md Sections 3–4 (normalization, API endpoints). Review other changes to docs.*
+- **Blockers:** *N/A*
+- **Open questions:** *N/A*
+- **AI use:** *N/A*
+- **Change request:** *None*
+- **Instructor response:** **
+
+---
