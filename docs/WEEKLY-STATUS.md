@@ -64,6 +64,6 @@ This is the one file your instructor checks each week. Keep each entry short: so
 - **Open questions:** *N/A*
 - **AI use:** *N/A*
 - **Change request:** *None*
-- **Instructor response:** **
+- **Instructor response:** *jLyst: Approved*
 
 ---
