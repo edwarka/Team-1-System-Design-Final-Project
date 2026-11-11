@@ -67,3 +67,23 @@ This is the one file your instructor checks each week. Keep each entry short: so
 - **Instructor response:** *jLyst: Approved*
 
 ---
+
+## Week [4] — [11/12/2026]
+
+- **Done:** 
+  - *Michal: Helped where needed. Reviewed changes made to docs.*
+  - *Delorean: Updated plan.md Sections 3–4 (screens & build order, risks & assumptions). Reviewed other changes made to docs.*
+  - *Kaleb:  Helped where needed. Reviewed changes made to docs. Updated weekly status.*
+  - *Nasif: Updated data-api-design.md Sections 3–4 (normalization, API endpoints). Reviewed other changes to docs.*
+- **Next:**
+  - *Michal: Help where needed. Review changes made to docs.*
+  - *Delorean: Help where needed. Review changes made to docs.*
+  - *Kaleb:  Update tasks.md (sequenced backlog, traced to Requirement IDs), plus complete a cross-check (tasks.md Section 2) that all documents agree before the Week 6 build. Review any other changes. Update weekly status.*
+  - *Nasif: Help where needed. Review changes made to docs.*
+- **Blockers:** *N/A*
+- **Open questions:** *N/A*
+- **AI use:** *N/A*
+- **Change request:** *None*
+- **Instructor response:** **
+
+---
