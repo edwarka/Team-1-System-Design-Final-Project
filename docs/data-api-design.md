@@ -142,11 +142,11 @@ erDiagram
 
 ## 3. Normalization Check
 
-- [ ] **1NF** — every field holds one value (no lists or comma-separated values in a field).
-- [ ] **2NF** — every field depends on the whole primary key.
-- [ ] **3NF** — no field depends on another non-key field (e.g. don't store `event_name` on a photo — store `event_id`).
+- [x] **1NF** — every field holds one value (no lists or comma-separated values in a field).
+- [x] **2NF** — every field depends on the whole primary key.
+- [x] **3NF** — no field depends on another non-key field (e.g. don't store `event_name` on a photo — store `event_id`).
 
-**Intentional exceptions:** *(Any rule you broke on purpose, and why — or "None".)*
+**Intentional exceptions:** None. Every entity uses a single-column `id` as its primary key, so there's no partial-dependency risk under 2NF. Under 3NF, next-due values and overdue status are deliberately computed from `initial_mileage`, `completed_mileage`, and `interval_miles` rather than stored as their own fields — this avoids a second copy of that value going stale when mileage changes.
 
 ---
 
@@ -156,9 +156,22 @@ erDiagram
 
 | Req ID | Method | Path | Request | Success response | Errors | Who can call it |
 |--------|--------|------|---------|------------------|--------|-----------------|
-| | | | | | | Anyone / Member / Admin |
+| R24, R27, R28 | POST | `/drivers` | `{phone, password}` | `201` new driver `{id, phone}` | `400` password under 8 characters, `400` phone not 10 digits, `409` phone already registered | Anyone |
+| R25, R26 | POST | `/sessions` | `{phone, password}` | `200` `{token, driver_id}` | `401` no match | Anyone |
+| R29 | POST | `/password-resets` | `{phone}` | `200` "code sent" | — | Anyone |
+| R30, R31 | PATCH | `/password-resets/:code` | `{new_password}` | `200` "password changed" | `400` code wrong or expired | Anyone |
+| R1, R2, R3 | POST | `/cars` | `{make, model, year, mileage}` | `201` new car, sets `initial_mileage` to `mileage` | `400` names the missing field | Member |
+| R1, R13 | GET | `/cars/me` | | `200` driver's own car | `404` no car yet | Member |
+| R16, R17 | PATCH | `/cars/:id/mileage` | `{mileage}` | `200` updated car, overdue flags refreshed | `400` lower than last entry | Member |
+| R4, R5, R8, R23 | GET | `/cars/:id/upcoming-maintenance` | | `200` tasks sorted soonest-due first, or unsupported-car message | `404` car not found | Member |
+| R6, R7 | GET | `/maintenance-tasks/:id` | | `200` `{task_name, explanation}` plus general-guidance notice | `404` | Member |
+| R9, R10, R11, R12, R32, R33, R34 | POST | `/cars/:id/completions` | `{schedule_id, completed_date, completed_mileage}` | `201` completion saved; car mileage advances if the completion's mileage is higher; next-due recalculates | `400` future date, `400` mileage lower than car's current reading for a same-day entry | Member |
+| R18, R19 | GET | `/cars/:id/completions` | | `200` history newest first, or "No maintenance recorded yet." | `404` | Member |
+| R20, R21 | PATCH | `/drivers/:id/reminder-settings` | `{reminders_enabled, email}` | `200` updated settings | `400` invalid email | Member |
 
 *Common status codes: `200` OK · `201` Created · `400` bad input · `401` not logged in · `403` not allowed · `404` not found · `409` conflict (e.g. duplicate).*
+
+R22 (sending the reminder email itself) isn't its own endpoint — it's a system action triggered when a mileage update crosses a due threshold. R13 is covered cross-cutting: every `Member` row above only ever operates on the signed-in driver's own data.
 
 ---
 
