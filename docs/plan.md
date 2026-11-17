@@ -2,14 +2,14 @@
 
 > **When:** Week 3 (Sections 1–2), Week 4 (Sections 3–4)  
 > **Owner:** DeLorean Wiggins — Architecture Lead, Plan  
-> **Version:** 0.9 review draft — November 7, 2026  
-> **Status:** Sections 1–4 updated for Specification PR #5 and Data & API Design v1.0; team decisions and architecture approval pending.  
+> **Version:** 0.10 review draft — November 17, 2026  
+> **Status:** Sections 1–4 cross-reviewed against the November 11 Data & API update for Week 5; remaining document conflicts and team approval are pending.  
 > **Approved on:** Pending  
 > **Approved by:** DeLorean Wiggins — pending; Nasif Rahman — pending; Michal Broniek — pending; Kaleb Edwards — pending.  
 > **Done when:** every item in the SVC Self-Check is true.  
 > **Filled-in Example:** `docs/examples/plan-example.md`
 
-**Basis:** Specification v1.0 after merged PR #5 (R1–R34), Data & API Design v1.0 Sections 0–2, and the current Style Guide. The product supports one car per driver and phone/password account access. Q1–Q3 are recorded as resolved. Q4 still marks historical maintenance as an assumption awaiting the whole team's answer. This Plan follows that assumption for review; a merge does not establish approval.
+**Basis:** Specification v1.0 after merged PR #5 (R1–R34), Data & API Design v1.0 Sections 0–4 (November 11 commit `7e04e0e`), and the current Style Guide. The product supports one car per driver and phone/password account access. Q1–Q3 are recorded as resolved. Q4 still marks historical maintenance as an assumption awaiting the whole team's answer. This Plan follows that assumption for review; a merge does not establish approval.
 
 ## 1. Approach
 
@@ -28,12 +28,26 @@ These are architecture proposals for team review unless a source decision is exp
 | ADR-06 | Validate and save a completion through one data-service operation: add its history record, advance `Car.mileage` only if higher (R34), and derive the next due point. Show the R32 confirmation only after success. A rejected or failed save leaves all persisted records unchanged. | R9–R12, R32, R34 | Separate writes from each screen; a second mileage prompt | Prevents a history entry, odometer and success message from disagreeing. The simulation needs an all-or-nothing persistence boundary; the later real backend needs equivalent transaction behavior. |
 | ADR-07 | **ASSUMPTION — follows open Q4:** accept past-dated, lower-mileage completions under R33. Calculate each task's due point from its most recent service, not the record entered last; retain `Car.initial_mileage` and never reduce current `Car.mileage`. | R9–R12, R33, R34; later R18 | Reject all lower readings; let the last-entered record set the schedule | Lets drivers record earlier work without undoing newer service or lowering the odometer. Historical ordering needs explicit rules in Nasif's contracts; if the team rejects Q4, Michal revises the Spec and this ADR is replaced before implementation. |
 
-**Data handoff:** use the existing `Driver`, `Car`, `MaintenanceSchedule`, `MaintenanceCompletion` and `PasswordReset` names and fields from Data & API Design. Capture `Car.initial_mileage` from the mileage entered during setup; do not add a fifth car-setup field (R2). Due values are calculated, not stored as a second source of truth. `data.js` is the proposed boundary between screens and the simulation; its operations and response shapes must match Nasif's completed contracts. API paths are not invented here while his Section 4 is unfinished.
+**Data handoff:** use the existing `Driver`, `Car`, `MaintenanceSchedule`, `MaintenanceCompletion` and `PasswordReset` names and fields from Data & API Design. Capture `Car.initial_mileage` from setup mileage without adding a fifth field (R2). Due values are calculated, not stored as a second source of truth. `data.js` is the proposed boundary between screens and the simulation. Nasif has now filled in Sections 3–4; use his documented methods and paths below. Where a response is only described in prose, Nasif must finish its exact shape before the build.
+
+**Week 5 API cross-review — November 17:** the paths below already exist in Data & API Section 4. The screen numbers refer to Section 3 of this Plan; they do not add routes or endpoints.
+
+| P1 Req IDs | Data & API entity / operation | Plan connection |
+|---|---|---|
+| R24–R28 | `Driver`; `POST /drivers`, `POST /sessions` | ADR-05; screen 3 |
+| R1–R3 | `Car`; `POST /cars`, `GET /cars/me` | ADR-00; parts 1 and 4 |
+| R4, R5, R8 | `Car`, `MaintenanceSchedule`, `MaintenanceCompletion`; `GET /cars/:id/upcoming-maintenance` | ADR-03; parts 1–2 |
+| R6, R7 | `MaintenanceSchedule`; `GET /maintenance-tasks/:id` | Screen 5; its due display also uses the upcoming-list data |
+| R9–R12, R32–R34 | `MaintenanceCompletion`, `Car`, `MaintenanceSchedule`; `POST /cars/:id/completions` | ADR-06/07; parts 1 and 6; response/read-back and ordering details remain below |
+| R13 | Driver ownership on `Car` and its completions; every Member operation | ADR-05; part 1 and every driver-data screen |
+| R14, R15 | UI layout and visible labels; no separate stored entity or endpoint needed | Every screen/form, checked with the Style Guide |
+
+**Handoff to Kaleb:** all 23 P1 IDs have a Plan connection above, but `tasks.md` on `main` is still the unfilled template at this review. Kaleb adds task IDs and dependencies in the Plan's order, carrying each Spec acceptance test into its completing task, then finishes Tasks Section 2 with the team. Map UI-only requirements to layout/label checks rather than inventing API calls. An empty task cell or unresolved contract is still a cross-check gap; this mapping does not claim Tasks approval or a successful build.
 
 **Review items before approval:**
 
-- **Michal, DeLorean, Nasif and Kaleb:** answer Q4 and record the decision in the Spec. Mike favors historical maintenance and Kaleb agreed in Slack; this is not a record of all four approvals.
-- **Nasif, with DeLorean's cross-review:** finish Data & API Sections 3–4. Its current failure paragraph rejects every lower-mileage completion, which conflicts with the newer R12/R33 distinction. It also needs to use the most recent service rather than the newest inserted record. Confirm request/response shapes, all-or-nothing save behavior, service ordering for same-date records, and the date used to determine “today.”
+- **Michal, DeLorean, Nasif and Kaleb:** close Q4 in the Spec after the whole team's answer. The supplied Slack now records DeLorean supporting historical maintenance while preserving current mileage and newer service, alongside Mike and Kaleb's support. Nasif's completion endpoint also allows the past-date exception, but his explicit Q4 response is not recorded here. Support for that feature is not approval of the whole Plan.
+- **Nasif, with DeLorean's cross-review:** Sections 3–4 are present. Section 4's `POST /cars/:id/completions` correctly limits the lower-mileage error to same-day entries, but Section 1's failure paragraph still rejects every lower reading. Align that paragraph with R12/R33 and make the calculation use the most recent service, not merely the newly entered record. Define same-date service ordering, which date counts as “today,” and all-or-nothing errors. The upcoming-list and completion responses still need exact fields for due values and the R32 result; define how R9's saved service date/mileage is read back after reload without requiring the P2 history screen.
 - **Michal and Nasif:** Q1's source and baseline choice is resolved. The remaining implementation details are the supported vehicles, actual manufacturer references, and the boundary between “due now” and “overdue”: Data & API currently uses `>=`, while R17's wording says mileage “passes” the due point. Agree these before claiming the calculation's acceptance checks pass.
 - **Michal and Kaleb:** decide how to explain the setup-baseline assumption when no past service is known. Keep R7's required general-guidance notice. Kaleb's Style Guide also needs its blanket lower-mileage rejection aligned with R12/R33 and the R32 saved message included.
 - **Michal and Nasif:** confirm the simulated account, password-reset and reminder behavior against R13, R20–R22 and R24–R31. A proposed simulation is not proof of real authentication, SMS or email delivery.
@@ -104,4 +118,4 @@ These ratings are proposals. The concrete review items in Section 2 are current 
 - [ ] **Valuable** — every ADR and screen has a requirement ID; every “Why this one” names a real trade-off.
 - [ ] **Complete** — ADR-00 names the full stack, starter skill and database; every P1 requirement is covered by a screen or part; P1 comes first, one scenario end to end at a time; every risk has a mitigation; the team has approved it before Tasks are written.
 
-**Review status:** Sections 1–4 are filled in for review. The screen/part inventory covers all 23 current P1 IDs: R1–R15, R24–R28 and R32–R34. Final completion still depends on the Q4 answer, simulation confirmation, Nasif's finished contracts, the named cross-document fixes, and review by DeLorean Wiggins, Nasif Rahman, Michal Broniek and Kaleb Edwards. No team approval or acceptance-test result is recorded by this draft.
+**Review status:** Sections 1–4 are filled in for review. The screen/part inventory covers all 23 current P1 IDs: R1–R15, R24–R28 and R32–R34. Final completion still depends on the Q4 answer, simulation confirmation, Nasif's remaining response/ordering details, the named cross-document fixes, and review by DeLorean Wiggins, Nasif Rahman, Michal Broniek and Kaleb Edwards. No team approval or acceptance-test result is recorded by this draft.
