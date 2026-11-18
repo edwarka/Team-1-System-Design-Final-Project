@@ -87,3 +87,21 @@ This is the one file your instructor checks each week. Keep each entry short: so
 - **Instructor response:** *jLyst: Approved*
 
 ---
+
+## Week [5] — [11/19/2026]
+
+- **Done:** 
+  - *Michal: Helped where needed. Reviewed changes made to docs.*
+  - *Delorean: Helped where needed. Reviewed changes made to docs.*
+  - *Kaleb:  Updated tasks.md (sequenced backlog, traced to Requirement IDs), plus completed a cross-check (tasks.md Section 2) that all documents agree before the Week 6 build. Reviewed any other changes. Updated weekly status.*
+  - *Nasif: Helped where needed. Reviewed changes made to docs.*
+- **Next:**
+  - *Michal: Develop validation buid. Run live test build. Help where needed. Review changes made to docs.*
+  - *Delorean: Develop validation buid. Run live test build. Help where needed. Review changes made to docs.*
+  - *Kaleb:  Develop validation buid. Run live test build. Update tasks.md gap log (tasks.md Section 3). Review other changes to docs. Update weekly status.*
+  - *Nasif: Develop validation buid. Run live test build. Help where needed. Review changes made to docs.*
+- **Blockers:** *N/A*
+- **Open questions:** *N/A*
+- **AI use:** *N/A*
+- **Change request:** *None*
+- **Instructor response:** **
