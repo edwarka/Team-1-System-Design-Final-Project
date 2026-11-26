@@ -108,7 +108,7 @@ This is the one file your instructor checks each week. Keep each entry short: so
 
 ---
 
-## Week [6] — [11/26/2026]
+## Week [6] — [11/25/2026]
 
 - **Done:** 
   - *Michal: Developed validation buid. Ran live test build. Helped where needed. Review changes made to docs.*
