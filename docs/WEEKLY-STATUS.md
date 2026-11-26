@@ -105,3 +105,23 @@ This is the one file your instructor checks each week. Keep each entry short: so
 - **AI use:** *N/A*
 - **Change request:** *None*
 - **Instructor response:** *jLyst: Approved*
+
+---
+
+## Week [6] — [11/26/2026]
+
+- **Done:** 
+  - *Michal: Developed validation buid. Ran live test build. Helped where needed. Review changes made to docs.*
+  - *Delorean: Developed validation buid. Ran live test build. Helped where needed. Review changes made to docs.*
+  - *Kaleb:  Developed validation buid. Ran live test build. Updated tasks.md gap log (tasks.md Section 3). Reviewed other changes to docs. Updated weekly status.*
+  - *Nasif: Developed validation buid. Ran live test build. Helped where needed. Review changes made to docs.*
+- **Next:**
+  - *Michal: Complete fix coverage, no silent drift, doc consistency, and re-run. Review changes made to docs.*
+  - *Delorean: Complete fix coverage, no silent drift, doc consistency, and re-run. Review changes made to docs.*
+  - *Kaleb:  Complete fix coverage, no silent drift, doc consistency, and re-run. Review changes made to docs. Review other changes to docs. Update weekly status.*
+  - *Nasif: Complete fix coverage, no silent drift, doc consistency, and re-run. Review changes made to docs.*
+- **Blockers:** *N/A*
+- **Open questions:** *N/A*
+- **AI use:** *Copiolet used to develop validation build.*
+- **Change request:** *None*
+- **Instructor response:** *jLyst: Approved*
